@@ -1,16 +1,45 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import AppHeader from '@/components/AppHeader';
+import SurahList from '@/components/SurahList';
+import JuzList from '@/components/JuzList';
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const [activeTab, setActiveTab] = useState<'surahs' | 'juz'>('surahs');
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen bg-background">
+      <AppHeader />
+
+      {/* Tabs */}
+      <div className="sticky top-[60px] z-40 flex border-b border-border bg-card/95 backdrop-blur-sm">
+        <button
+          onClick={() => setActiveTab('surahs')}
+          className={`flex-1 py-3 text-center font-arabic text-sm font-semibold transition-all ${
+            activeTab === 'surahs'
+              ? 'border-b-2 border-primary text-primary'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          السور
+        </button>
+        <button
+          onClick={() => setActiveTab('juz')}
+          className={`flex-1 py-3 text-center font-arabic text-sm font-semibold transition-all ${
+            activeTab === 'juz'
+              ? 'border-b-2 border-primary text-primary'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          الأجزاء
+        </button>
+      </div>
+
+      {/* Content */}
+      <main>
+        {activeTab === 'surahs' ? <SurahList /> : <JuzList />}
+      </main>
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
