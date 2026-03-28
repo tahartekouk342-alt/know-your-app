@@ -7,8 +7,10 @@ interface QuranReaderProps {
 }
 
 const Bismillah = () => (
-  <div className="text-center py-4 font-quran text-xl text-primary leading-loose">
-    بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِيمِ
+  <div className="mx-auto my-4 max-w-xs rounded-lg border-2 border-gold/30 bg-card py-3 text-center shadow-islamic">
+    <p className="font-quran text-xl text-primary leading-loose">
+      بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِيمِ
+    </p>
   </div>
 );
 
@@ -40,34 +42,45 @@ const QuranReader = ({ surahNumber }: QuranReaderProps) => {
 
   return (
     <div className="pb-28">
-      {/* Surah Header */}
-      <div className="mx-3 my-4 rounded-xl border-2 border-gold/40 bg-card p-4 text-center shadow-islamic">
-        <div className="gradient-islamic bg-clip-text">
-          <h2 className="font-quran text-2xl font-bold text-primary">
-            سورة {surahInfo?.name}
+      {/* Surah Header - ornamental frame */}
+      <div className="mx-3 my-4 overflow-hidden rounded-xl border-2 border-gold/50 bg-card shadow-islamic">
+        <div className="gradient-islamic px-4 py-1">
+          <div className="flex items-center justify-between text-xs text-primary-foreground/80">
+            <span>{surahInfo?.revelationType === 'meccan' ? 'مكية' : 'مدنية'}</span>
+            <span>آياتها {toArabicNumber(surahInfo?.versesCount || 0)}</span>
+          </div>
+        </div>
+        <div className="py-4 text-center">
+          <h2 className="font-quran text-3xl font-bold text-primary">
+            سُورَةُ {surahInfo?.name}
           </h2>
         </div>
-        <p className="mt-1 text-sm text-muted-foreground font-arabic">
-          {surahInfo?.revelationType === 'meccan' ? 'مكية' : 'مدنية'} • {toArabicNumber(surahInfo?.versesCount || 0)} آيات
-        </p>
+        <div className="gradient-islamic h-1" />
       </div>
 
       {/* Bismillah */}
-      {surahNumber !== 9 && surahNumber !== 1 && <Bismillah />}
+      {surahNumber !== 9 && <Bismillah />}
 
-      {/* Ayahs */}
-      <div className="mx-3 rounded-xl border border-border bg-card p-4">
-        <p className="font-quran text-xl leading-[2.8] text-foreground text-right" dir="rtl">
-          {surah.ayahs.map((ayah: Ayah) => (
-            <span key={ayah.numberInSurah}>
-              {surahNumber === 1 || ayah.numberInSurah > 1 || surahNumber === 9
-                ? ayah.text
-                : ayah.text.replace(/^بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِيمِ\s*/, '')
-              }
-              <AyahNumber num={ayah.numberInSurah} />
-            </span>
-          ))}
-        </p>
+      {/* Ayahs - traditional Mushaf style */}
+      <div className="mx-2 rounded-xl border-2 border-gold/30 bg-card overflow-hidden">
+        <div className="border-b border-gold/20 gradient-islamic px-3 py-1.5 text-center">
+          <span className="text-xs text-primary-foreground/80 font-arabic">
+            رواية ورش عن نافع
+          </span>
+        </div>
+        <div className="p-4">
+          <p className="font-quran text-[1.4rem] leading-[3] text-foreground text-right" dir="rtl">
+            {surah.ayahs.map((ayah: Ayah) => (
+              <span key={ayah.numberInSurah}>
+                {ayah.text}
+                {' '}
+                <AyahNumber num={ayah.numberInSurah} />
+                {' '}
+              </span>
+            ))}
+          </p>
+        </div>
+        <div className="gradient-islamic h-1" />
       </div>
     </div>
   );
