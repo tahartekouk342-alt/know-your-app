@@ -166,28 +166,55 @@ export const juzs: JuzInfo[] = [
 export interface ReciterInfo {
   id: string;
   name: string;
-  serverUrl: string;
+  // Full surah audio
+  surahServerUrl: string;
+  // Per-ayah audio (everyayah.com format: {base}{surahPadded}{ayahPadded}.mp3)
+  ayahServerUrl: string;
 }
 
 export const reciters: ReciterInfo[] = [
   {
-    id: 'husary_warsh',
-    name: 'الشيخ محمود خليل الحصري',
-    serverUrl: 'https://server8.mp3quran.net/husary_warsh/',
+    id: 'abdul_basit_warsh',
+    name: 'عبد الباسط عبد الصمد',
+    surahServerUrl: 'https://server8.mp3quran.net/husary_warsh/',
+    ayahServerUrl: 'https://everyayah.com/data/warsh/warsh_Abdul_Basit_128kbps/',
   },
   {
-    id: 'yassin',
+    id: 'yassin_jazaery',
     name: 'ياسين الجزائري',
-    serverUrl: 'https://server11.mp3quran.net/yasser/',
+    surahServerUrl: 'https://server11.mp3quran.net/yasser/',
+    ayahServerUrl: 'https://everyayah.com/data/warsh/warsh_yassin_al_jazaery_64kbps/',
+  },
+  {
+    id: 'ibrahim_dosary',
+    name: 'إبراهيم الدوسري',
+    surahServerUrl: '',
+    ayahServerUrl: 'https://everyayah.com/data/warsh/warsh_ibrahim_aldosary_128kbps/',
   },
 ];
 
-export function getAudioUrl(reciter: ReciterInfo, surahNumber: number): string {
+export function getAyahAudioUrl(reciter: ReciterInfo, surahNumber: number, ayahNumber: number): string {
+  const paddedSurah = surahNumber.toString().padStart(3, '0');
+  const paddedAyah = ayahNumber.toString().padStart(3, '0');
+  return `${reciter.ayahServerUrl}${paddedSurah}${paddedAyah}.mp3`;
+}
+
+export function getSurahAudioUrl(reciter: ReciterInfo, surahNumber: number): string {
+  if (!reciter.surahServerUrl) return '';
   const paddedNumber = surahNumber.toString().padStart(3, '0');
-  return `${reciter.serverUrl}${paddedNumber}.mp3`;
+  return `${reciter.surahServerUrl}${paddedNumber}.mp3`;
 }
 
 export function toArabicNumber(num: number): string {
   const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
   return num.toString().split('').map(d => arabicDigits[parseInt(d)]).join('');
+}
+
+// Page number to Surah mapping (which surah starts on each page)
+export function getSurahForPage(pageNumber: number): number {
+  // Approximate: page 1 = Al-Fatiha, page 2 = Al-Baqarah start, etc.
+  // This will be refined by the actual page data
+  if (pageNumber === 1) return 1;
+  if (pageNumber <= 49) return 2;
+  return Math.min(114, Math.floor(pageNumber / 5));
 }
