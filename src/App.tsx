@@ -3,11 +3,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Index from "./pages/Index";
-import MushafPage from "./pages/MushafPage";
-import MemorizePage from "./pages/MemorizePage";
-import TajweedPage from "./pages/TajweedPage";
-import NotFound from "./pages/NotFound";
+import Index from "./pages/Index.tsx";
+import SurahPage from "./pages/SurahPage.tsx";
+import JuzPage from "./pages/JuzPage.tsx";
+import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
 
@@ -19,9 +18,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/mushaf/:pageNumber" element={<MushafPage />} />
-          <Route path="/memorize" element={<MemorizePage />} />
-          <Route path="/tajweed" element={<TajweedPage />} />
+          <Route path="/surah/:surahNumber" element={<SurahPage />} />
+          <Route path="/juz/:juzNumber" element={<JuzPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
